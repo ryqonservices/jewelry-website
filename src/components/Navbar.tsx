@@ -5,7 +5,10 @@ import { useState, useEffect } from "react";
 import { ShoppingBag, Menu, X, Search, Gem } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
+import { useCart } from "@/context/CartContext";
+
 export function Navbar() {
+  const { cartCount } = useCart();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -27,43 +30,53 @@ export function Navbar() {
 
   return (
     <>
-      <nav className={`fixed top-0 w-full z-50 transition-all duration-500 ease-in-out ${
-        isScrolled ? "bg-black/95 py-3 border-b border-white/10" : "bg-[#1d1d1f]/90 py-4"
-      } backdrop-blur-md`}>
-        <div className="max-w-[1024px] mx-auto px-6 flex justify-between items-center text-white/90">
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        isScrolled ? "bg-black/90 py-5 border-b border-gold/10 shadow-[0_20px_40px_rgba(0,0,0,0.4)]" : "bg-transparent py-10"
+      } backdrop-blur-3xl`}>
+        <div className="max-w-[1440px] mx-auto px-8 md:px-16 flex justify-between items-center text-white">
           
-          <Link href="/" className="hover:text-white transition-all duration-300 flex items-center gap-2">
-            <Gem className="w-4 h-4 opacity-80" />
-            <span className={`text-[12px] font-semibold tracking-tight transition-opacity duration-300 ${isScrolled ? 'opacity-100' : 'opacity-0 hidden md:block'}`}>
-              The Eternal Halo
+          <Link href="/" className="hover:text-gold transition-all duration-700 flex items-center gap-4 group">
+            <Gem className="w-6 h-6 text-gold group-hover:rotate-[360deg] transition-transform duration-1000" />
+            <span className="text-3xl font-serif tracking-tighter uppercase italic font-black">
+              Aurelia
             </span>
           </Link>
 
-          <div className="hidden md:flex flex-1 justify-center items-center gap-8 text-[11px] font-medium tracking-tight font-sans opacity-80">
+          <div className="hidden lg:flex flex-1 justify-center items-center gap-12 text-[10px] font-black tracking-[0.5em] uppercase text-white/40">
             {navLinks.map((link) => (
               <Link 
                  key={link.name} 
                  href={link.href} 
-                 className="hover:text-white transition-opacity duration-300"
+                 className="hover:text-gold transition-all duration-700 relative group"
               >
                 {link.name}
+                <motion.span 
+                  className="absolute -bottom-2 left-0 w-0 h-px bg-gold transition-all duration-700 group-hover:w-full"
+                  initial={false}
+                />
               </Link>
             ))}
           </div>
 
-          <div className="flex items-center gap-5">
-            <Link href="/search" className="opacity-70 hover:opacity-100 transition-all duration-300 hidden sm:block">
-              <Search className="w-4 h-4" />
+          <div className="flex items-center gap-10">
+            <Link href="/search" className="text-white/40 hover:text-gold transition-all duration-500 hidden sm:block">
+              <Search className="w-5 h-5" />
             </Link>
-            <Link href="/cart" className="opacity-70 hover:opacity-100 transition-all duration-300 relative group">
-              <ShoppingBag className="w-4 h-4" />
-              <span className="absolute -top-1 -right-2 bg-[#0071e3] text-[9px] w-3.5 h-3.5 flex items-center justify-center rounded-full font-bold">2</span>
+            <Link href="/cart" className="text-white/40 hover:text-gold transition-all duration-500 relative group flex items-center gap-2">
+              <ShoppingBag className="w-5 h-5" />
+              <div className="flex flex-col -space-y-1">
+                 <motion.span 
+                   key={cartCount}
+                   initial={{ scale: 0.5, opacity: 0 }}
+                   animate={{ scale: 1, opacity: 1 }}
+                   className="text-[10px] font-black uppercase tracking-widest text-gold"
+                 >
+                   {cartCount}
+                 </motion.span>
+              </div>
             </Link>
-            <Link href="/cart" className="bg-[#0071e3] text-white px-4 py-1.5 rounded-full hover:bg-[#0077ed] transition-colors text-[11px] font-semibold shadow-sm ml-2">
-              Buy
-            </Link>
-            <button className="md:hidden opacity-70 hover:opacity-100 transition-opacity" onClick={() => setIsMobileMenuOpen(true)}>
-               <Menu className="w-5 h-5" />
+            <button className="md:hidden text-white/40 hover:text-gold transition-all" onClick={() => setIsMobileMenuOpen(true)}>
+               <Menu className="w-7 h-7" />
             </button>
           </div>
 
