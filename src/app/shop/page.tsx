@@ -8,12 +8,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { MOCK_PRODUCTS } from "@/data/mock";
 import { ChevronDown, ShoppingBag, Eye, Star } from "lucide-react";
 
-const fadeInUp = {
+const fadeInUp: import("framer-motion").Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
 };
 
-const staggerContainer = {
+const staggerContainer: import("framer-motion").Variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
 };
