@@ -3,16 +3,33 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Sparkles, Shield, Clock } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
+/**
+ * ANIMATION VARIANTS
+ * Using refined, slower transitions for a luxury feel.
+ */
 const fadeInUp: import("framer-motion").Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } }
+  hidden: { opacity: 0, y: 40 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { 
+      duration: 1.2, 
+      ease: [0.22, 1, 0.36, 1] 
+    } 
+  }
 };
 
 const staggerContainer: import("framer-motion").Variants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
+  visible: { 
+    opacity: 1, 
+    transition: { 
+      staggerChildren: 0.2,
+      delayChildren: 0.1
+    } 
+  }
 };
 
 export default function CollectionsPage() {
@@ -26,44 +43,82 @@ export default function CollectionsPage() {
   ];
 
   return (
-    <div className="bg-black min-h-screen text-white font-sans selection:bg-gold selection:text-black pt-20">
+    <div className="bg-[#050505] min-h-screen text-[#F3F3F3] font-sans selection:bg-gold selection:text-black pt-20">
       
-      {/* 1. MINIMALIST HEADER */}
-      <section className="pt-40 pb-20 px-6 max-w-7xl mx-auto">
-        <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1 }} className="space-y-6">
-           <span className="text-gold uppercase tracking-[0.5em] text-[10px] font-black">Universe of Light</span>
-           <h1 className="text-6xl md:text-9xl font-serif text-white tracking-tighter leading-none italic uppercase">The <br/><span className="gold-gradient">Discovery</span></h1>
+      {/* 1. EDITORIAL HEADER */}
+      <section className="pt-48 pb-32 px-6 max-w-[1400px] mx-auto text-center">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.98 }} 
+          animate={{ opacity: 1, scale: 1 }} 
+          transition={{ duration: 1.5, ease: "easeOut" }} 
+          className="space-y-8"
+        >
+           <div className="flex items-center justify-center gap-4">
+             <div className="h-[1px] w-8 bg-gold/40" />
+             <span className="text-gold uppercase tracking-[0.6em] text-[10px] font-medium">Metier d&apos;Art</span>
+             <div className="h-[1px] w-8 bg-gold/40" />
+           </div>
+           
+           <h1 className="text-6xl md:text-[140px] font-serif tracking-tighter leading-[0.85] uppercase">
+             The <br/>
+             <span className="italic font-light opacity-80">Collection</span>
+           </h1>
+           
+           <p className="max-w-xl mx-auto text-white/40 text-xs md:text-sm uppercase tracking-[0.3em] leading-loose font-light">
+             A curation of exceptional craftsmanship, where each piece tells a story of light, legacy, and timeless elegance.
+           </p>
         </motion.div>
       </section>
 
-      {/* 2. COLLECTION MOSAIC GRID */}
-      <section className="max-w-7xl mx-auto px-6 pb-60">
+      {/* 2. COLLECTION GALLERY GRID */}
+      <section className="max-w-[1600px] mx-auto px-6 pb-64">
         <motion.div 
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}
+          viewport={{ once: true, margin: "-100px" }}
           variants={staggerContainer}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16"
         >
           {categories.map((cat, i) => (
             <motion.div 
               key={cat.name}
               variants={fadeInUp}
-              className={`relative overflow-hidden group shadow-2xl border border-white/5 ${i === 1 || i === 4 ? 'md:aspect-[3/4] md:h-[700px]' : 'md:aspect-square md:h-[550px]'}`}
+              className="group cursor-pointer"
             >
-              <Link href={cat.href} className="w-full h-full block">
-                <Image src={cat.img} alt={cat.name} fill className="object-cover transition-transform duration-[2s] group-hover:scale-110 grayscale group-hover:grayscale-0 opacity-40 group-hover:opacity-100" />
-                <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-all duration-1000" />
-                
-                <div className="absolute bottom-12 left-12 right-12 flex flex-col items-center text-center space-y-6">
-                   <div className="w-12 h-px bg-gold/50 group-hover:w-24 transition-all duration-700 mx-auto" />
-                   <div className="space-y-2">
-                     <h3 className="text-white text-4xl md:text-5xl font-serif tracking-tight leading-none italic uppercase group-hover:text-gold transition-colors">{cat.name}</h3>
-                     <p className="text-white/40 uppercase tracking-[0.3em] text-[9px] font-black">{cat.count}</p>
-                   </div>
-                   <div className="flex items-center gap-4 text-gold text-[8px] uppercase tracking-[0.6em] translate-y-20 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-700 font-bold bg-black/40 px-8 py-3 rounded-full backdrop-blur-md">
-                     Browse Collection <ArrowRight className="w-4 h-4" />
-                   </div>
+              <Link href={cat.href} className="block space-y-8">
+                {/* Image Container with Consistent Aspect Ratio for Alignment */}
+                <div className="relative aspect-[4/5] overflow-hidden bg-neutral-900 border border-white/5 luxury-shadow">
+                  <Image 
+                    src={cat.img} 
+                    alt={cat.name} 
+                    fill 
+                    className="object-cover transition-transform duration-[2.5s] ease-out group-hover:scale-105 opacity-80 group-hover:opacity-100" 
+                  />
+                  
+                  {/* Subtle Gold Border Hover Overlay */}
+                  <div className="absolute inset-0 border-[0px] group-hover:border-[1px] border-gold/30 transition-all duration-700 pointer-events-none" />
+                  
+                  {/* Dark Vignette */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-700" />
+                </div>
+
+                {/* Content Area - Clean & Aligned */}
+                <div className="flex flex-col items-center text-center space-y-4">
+                  <div className="space-y-1">
+                    <p className="text-gold/60 uppercase tracking-[0.4em] text-[8px] font-bold">{cat.count}</p>
+                    <h3 className="text-white text-3xl md:text-4xl font-serif tracking-tight uppercase group-hover:text-gold/90 transition-colors duration-500">
+                      {cat.name}
+                    </h3>
+                  </div>
+                  
+                  {/* View Details Label */}
+                  <div className="flex items-center gap-2 overflow-hidden">
+                    <div className="h-[1px] w-0 group-hover:w-8 bg-gold/50 transition-all duration-700" />
+                    <span className="text-[9px] uppercase tracking-[0.5em] text-white/30 group-hover:text-white/70 transition-colors duration-500 font-bold">
+                      Explore
+                    </span>
+                    <ArrowRight className="w-3 h-3 text-gold/50 group-hover:translate-x-1 transition-transform duration-500" />
+                  </div>
                 </div>
               </Link>
             </motion.div>
@@ -71,13 +126,31 @@ export default function CollectionsPage() {
         </motion.div>
       </section>
 
-      {/* 3. FINAL REACH */}
-      <section className="py-60 px-6 text-center bg-[#080808]">
-         <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} className="max-w-3xl mx-auto space-y-12">
-            <h2 className="text-5xl md:text-8xl font-serif text-white tracking-tighter leading-none italic uppercase">Indulge in <br/>extraordinary</h2>
-            <p className="text-white/50 text-xl font-light leading-relaxed max-w-2xl mx-auto italic tracking-wide">Whether you are searching for a personal milestone or a gift of lasting impact, our collections are a celebration of mastery in every detail.</p>
-            <Link href="/shop" className="inline-block px-14 py-7 bg-white text-black uppercase tracking-[0.4em] text-[10px] font-black rounded-3xl hover:bg-gold hover:text-black transition-all shadow-luxury">
-               Explore Full Boutique
+      {/* 3. FINAL CALL TO ACTION */}
+      <section className="py-72 px-6 text-center border-t border-white/[0.03] bg-[#030303]">
+         <motion.div 
+            initial={{ opacity: 0, y: 40 }} 
+            whileInView={{ opacity: 1, y: 0 }} 
+            transition={{ duration: 1.5 }}
+            className="max-w-4xl mx-auto space-y-16"
+         >
+            <div className="space-y-6">
+              <span className="text-gold uppercase tracking-[0.6em] text-[10px] font-bold">The Aurelia Legacy</span>
+              <h2 className="text-5xl md:text-8xl font-serif text-white tracking-tighter leading-[0.9] uppercase">
+                Timeless<br/>
+                <span className="italic font-light opacity-70">Mastery</span>
+              </h2>
+            </div>
+            
+            <p className="text-white/40 text-base md:text-lg font-light leading-relaxed max-w-2xl mx-auto tracking-wide">
+              Every creation is a testament to our pursuit of brilliance. Experience the convergence of high-jewelry heritage and contemporary vision.
+            </p>
+            
+            <Link href="/shop" className="relative inline-block px-14 py-6 group">
+                <span className="absolute inset-0 bg-white rounded-full transition-transform duration-500 group-hover:scale-105" />
+                <span className="relative text-black uppercase tracking-[0.5em] text-[10px] font-heavy">
+                  Visit The Boutique
+                </span>
             </Link>
          </motion.div>
       </section>

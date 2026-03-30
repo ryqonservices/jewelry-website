@@ -1,116 +1,144 @@
 "use client";
 
 import Link from "next/link";
-import { ChevronLeft, Lock, ArrowRight } from "lucide-react";
+import { ChevronLeft, Lock } from "lucide-react";
 
 export default function Checkout() {
   return (
-    <div className="max-w-4xl mx-auto px-6 md:px-12 py-16">
-      <div className="mb-12 flex items-center justify-between">
-         <Link href="/cart" className="flex items-center gap-2 text-neutral-500 hover:text-gold transition-colors text-sm uppercase tracking-widest">
-           <ChevronLeft className="w-4 h-4" /> Return to Cart
-         </Link>
-         <div className="flex items-center gap-2 text-gold uppercase tracking-widest text-xs font-medium">
-           <Lock className="w-4 h-4" /> Secure Checkout
-         </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-        <div>
-          <h2 className="text-2xl font-serif text-neutral-900 mb-8 border-b border-neutral-200 pb-4">Contact Information</h2>
-          <form className="space-y-6">
-            <div>
-              <label htmlFor="email" className="block text-xs uppercase tracking-widest text-neutral-500 mb-2 font-medium">Email Address</label>
-              <input type="email" id="email" className="w-full bg-transparent border border-neutral-300 py-3 px-4 focus:ring-1 focus:ring-gold outline-none focus:border-gold transition-colors text-neutral-900" placeholder="jane@example.com" />
-            </div>
-
-            <h2 className="text-2xl font-serif text-neutral-900 mb-8 mt-12 border-b border-neutral-200 pb-4">Shipping Address</h2>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs uppercase tracking-widest text-neutral-500 mb-2 font-medium">First Name</label>
-                <input type="text" className="w-full bg-transparent border border-neutral-300 py-3 px-4 focus:ring-1 focus:ring-gold outline-none focus:border-gold transition-colors text-neutral-900" />
-              </div>
-              <div>
-                <label className="block text-xs uppercase tracking-widest text-neutral-500 mb-2 font-medium">Last Name</label>
-                <input type="text" className="w-full bg-transparent border border-neutral-300 py-3 px-4 focus:ring-1 focus:ring-gold outline-none focus:border-gold transition-colors text-neutral-900" />
-              </div>
-            </div>
-            
-            <div>
-              <label className="block text-xs uppercase tracking-widest text-neutral-500 mb-2 font-medium">Address</label>
-              <input type="text" className="w-full bg-transparent border border-neutral-300 py-3 px-4 focus:ring-1 focus:ring-gold outline-none focus:border-gold transition-colors text-neutral-900 mb-4" placeholder="Street Address" />
-              <input type="text" className="w-full bg-transparent border border-neutral-300 py-3 px-4 focus:ring-1 focus:ring-gold outline-none focus:border-gold transition-colors text-neutral-900" placeholder="Apartment, suite, etc. (optional)" />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs uppercase tracking-widest text-neutral-500 mb-2 font-medium">City</label>
-                <input type="text" className="w-full bg-transparent border border-neutral-300 py-3 px-4 focus:ring-1 focus:ring-gold outline-none focus:border-gold transition-colors text-neutral-900" />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs uppercase tracking-widest text-neutral-500 mb-2 font-medium">State</label>
-                  <input type="text" className="w-full bg-transparent border border-neutral-300 py-3 px-4 focus:ring-1 focus:ring-gold outline-none focus:border-gold transition-colors text-neutral-900" />
-                </div>
-                <div>
-                  <label className="block text-xs uppercase tracking-widest text-neutral-500 mb-2 font-medium">ZIP</label>
-                  <input type="text" className="w-full bg-transparent border border-neutral-300 py-3 px-4 focus:ring-1 focus:ring-gold outline-none focus:border-gold transition-colors text-neutral-900" />
-                </div>
-              </div>
-            </div>
-
-            <h2 className="text-2xl font-serif text-neutral-900 mb-8 mt-12 border-b border-neutral-200 pb-4">Payment</h2>
-            <div className="border border-neutral-300 p-6 bg-white shadow-sm space-y-6">
-               <div>
-                  <label className="block text-xs uppercase tracking-widest text-neutral-500 mb-2 font-medium">Card Number</label>
-                  <div className="flex border border-neutral-300 items-center overflow-hidden focus-within:ring-1 focus-within:ring-gold focus-within:border-gold transition-colors">
-                     <input type="text" className="w-full bg-transparent py-3 px-4 outline-none text-neutral-900" placeholder="0000 0000 0000 0000" />
-                     <div className="px-4 text-neutral-400"><Lock className="w-4 h-4"/></div>
-                  </div>
-               </div>
-               <div className="grid grid-cols-2 gap-4">
-                 <div>
-                   <label className="block text-xs uppercase tracking-widest text-neutral-500 mb-2 font-medium">Expiration</label>
-                   <input type="text" className="w-full bg-transparent border border-neutral-300 py-3 px-4 focus:ring-1 focus:ring-gold outline-none focus:border-gold transition-colors text-neutral-900" placeholder="MM/YY" />
-                 </div>
-                 <div>
-                   <label className="block text-xs uppercase tracking-widest text-neutral-500 mb-2 font-medium">CVC</label>
-                   <input type="text" className="w-full bg-transparent border border-neutral-300 py-3 px-4 focus:ring-1 focus:ring-gold outline-none focus:border-gold transition-colors text-neutral-900" placeholder="123" />
-                 </div>
-               </div>
-            </div>
-
-            <button type="button" className="w-full mt-12 bg-neutral-900 text-cream py-5 uppercase tracking-widest text-sm font-medium hover:bg-gold hover:text-white transition-colors shadow-[0_10px_30px_rgba(0,0,0,0.1)] hover:shadow-luxury flex justify-center items-center gap-2 group">
-              Complete Order <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </button>
-          </form>
+    <div className="bg-[#050505] min-h-screen text-[#F3F3F3] font-sans selection:bg-gold selection:text-black pt-28 pb-40">
+      <div className="max-w-[1100px] mx-auto px-6 md:px-12">
+        
+        {/* FORMAL HEADER NAVIGATION */}
+        <div className="mb-16 flex items-center justify-between border-b border-white/5 pb-8">
+           <Link href="/cart" className="flex items-center gap-2 text-white/30 hover:text-gold transition-colors text-[10px] uppercase tracking-[0.4em] font-medium">
+             <ChevronLeft className="w-3 h-3" /> Return to Bag
+           </Link>
+           <div className="flex items-center gap-2 text-gold/60 uppercase tracking-[0.5em] text-[10px] font-bold">
+             <Lock className="w-3 h-3" /> Secure Checkout
+           </div>
         </div>
 
-        <div className="lg:border-l border-neutral-200 lg:pl-16">
-          <div className="bg-beige p-8 sticky top-32">
-             <h3 className="font-serif text-2xl mb-8 border-b border-neutral-200 pb-4 text-neutral-900">Summary</h3>
-             <ul className="space-y-6 mb-8 border-b border-neutral-200 pb-8">
-               <li className="flex justify-between text-neutral-900">
-                 <span className="text-sm">Eternal Diamond Ring<span className="text-neutral-500 ml-2">x1</span></span>
-                 <span className="tracking-wider">$1,250</span>
-               </li>
-               <li className="flex justify-between text-neutral-900">
-                 <span className="text-sm">Luminous Pearl Necklace<span className="text-neutral-500 ml-2">x2</span></span>
-                 <span className="tracking-wider">$1,700</span>
-               </li>
-             </ul>
-             <div className="flex justify-between mb-4 text-neutral-600">
-                <span className="font-light">Subtotal</span>
-                <span className="tracking-wider">${2950}</span>
-             </div>
-             <div className="flex justify-between mb-8 text-neutral-600">
-                <span className="font-light">Shipping</span>
-                <span className="uppercase tracking-widest text-gold text-xs font-medium">Complimentary</span>
-             </div>
-             <div className="flex justify-between border-t border-neutral-200 pt-6 text-neutral-900 text-lg">
-                <span className="font-medium">Total</span>
-                <span className="font-serif text-2xl tracking-wider">${2950}</span>
-             </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 items-start">
+          
+          {/* CHECKOUT FORM */}
+          <div className="lg:col-span-7 space-y-16">
+            
+            {/* Section: Contact */}
+            <section className="space-y-8">
+              <h2 className="text-xl font-serif text-white tracking-widest uppercase font-light italic">Contact Details</h2>
+              <div className="space-y-6">
+                <div className="group">
+                  <label htmlFor="email" className="block text-[9px] uppercase tracking-[0.6em] text-white/30 mb-3 font-bold group-focus-within:text-gold transition-colors">Email Address</label>
+                  <input 
+                    type="email" 
+                    id="email" 
+                    className="w-full bg-transparent border-b border-white/10 py-3 px-0 focus:border-gold outline-none transition-colors text-sm font-light placeholder:text-white/10" 
+                    placeholder="name@domain.com" 
+                  />
+                </div>
+              </div>
+            </section>
+
+            {/* Section: Shipping */}
+            <section className="space-y-10">
+              <h2 className="text-xl font-serif text-white tracking-widest uppercase font-light italic">Shipping Residence</h2>
+              <div className="grid grid-cols-2 gap-x-8 gap-y-10">
+                <div className="group">
+                  <label className="block text-[9px] uppercase tracking-[0.6em] text-white/30 mb-3 font-bold group-focus-within:text-gold transition-colors">First Name</label>
+                  <input type="text" className="w-full bg-transparent border-b border-white/10 py-3 px-0 focus:border-gold outline-none transition-colors text-sm font-light" />
+                </div>
+                <div className="group">
+                  <label className="block text-[9px] uppercase tracking-[0.6em] text-white/30 mb-3 font-bold group-focus-within:text-gold transition-colors">Last Name</label>
+                  <input type="text" className="w-full bg-transparent border-b border-white/10 py-3 px-0 focus:border-gold outline-none transition-colors text-sm font-light" />
+                </div>
+                <div className="col-span-2 group">
+                  <label className="block text-[9px] uppercase tracking-[0.6em] text-white/30 mb-3 font-bold group-focus-within:text-gold transition-colors">Full Address</label>
+                  <input type="text" className="w-full bg-transparent border-b border-white/10 py-3 px-0 focus:border-gold outline-none transition-colors text-sm font-light mb-4" placeholder="Street Address" />
+                  <input type="text" className="w-full bg-transparent border-b border-white/10 py-3 px-0 focus:border-gold outline-none transition-colors text-sm font-light" placeholder="Apartment, suite, etc. (optional)" />
+                </div>
+                <div className="group">
+                  <label className="block text-[9px] uppercase tracking-[0.6em] text-white/30 mb-3 font-bold group-focus-within:text-gold transition-colors">City</label>
+                  <input type="text" className="w-full bg-transparent border-b border-white/10 py-3 px-0 focus:border-gold outline-none transition-colors text-sm font-light" />
+                </div>
+                <div className="grid grid-cols-2 gap-8">
+                  <div className="group">
+                    <label className="block text-[9px] uppercase tracking-[0.6em] text-white/30 mb-3 font-bold group-focus-within:text-gold transition-colors">State</label>
+                    <input type="text" className="w-full bg-transparent border-b border-white/10 py-3 px-0 focus:border-gold outline-none transition-colors text-sm font-light" />
+                  </div>
+                  <div className="group">
+                    <label className="block text-[9px] uppercase tracking-[0.6em] text-white/30 mb-3 font-bold group-focus-within:text-gold transition-colors">ZIP</label>
+                    <input type="text" className="w-full bg-transparent border-b border-white/10 py-3 px-0 focus:border-gold outline-none transition-colors text-sm font-light" />
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Section: Payment */}
+            <section className="space-y-10">
+              <h2 className="text-xl font-serif text-white tracking-widest uppercase font-light italic">Payment Method</h2>
+              <div className="border border-white/5 p-10 bg-[#080808] space-y-10">
+                 <div className="group">
+                    <label className="block text-[9px] uppercase tracking-[0.6em] text-white/30 mb-4 font-bold group-focus-within:text-gold transition-colors">Card Information</label>
+                    <div className="flex border-b border-white/10 items-center focus-within:border-gold transition-colors">
+                       <input type="text" className="w-full bg-transparent py-4 px-0 outline-none text-sm font-light tracking-[0.2em]" placeholder="0000 0000 0000 0000" />
+                       <Lock className="w-3 h-3 text-white/10" />
+                    </div>
+                 </div>
+                 <div className="grid grid-cols-2 gap-10">
+                   <div className="group">
+                     <label className="block text-[9px] uppercase tracking-[0.6em] text-white/30 mb-3 font-bold group-focus-within:text-gold transition-colors">Expiration</label>
+                     <input type="text" className="w-full bg-transparent border-b border-white/10 py-3 px-0 focus:border-gold outline-none transition-colors text-sm font-light" placeholder="MM/YY" />
+                   </div>
+                   <div className="group">
+                     <label className="block text-[9px] uppercase tracking-[0.6em] text-white/30 mb-3 font-bold group-focus-within:text-gold transition-colors">CVC</label>
+                     <input type="text" className="w-full bg-transparent border-b border-white/10 py-3 px-0 focus:border-gold outline-none transition-colors text-sm font-light" placeholder="123" />
+                   </div>
+                 </div>
+              </div>
+            </section>
+
+            <button type="button" className="w-full mt-10 bg-[#F3F3F3] text-black py-5 uppercase tracking-[0.6em] text-[10px] font-bold hover:bg-gold transition-all duration-700">
+              Confirm & Finalize Order
+            </button>
+          </div>
+
+          {/* SUMMARY SIDEBAR */}
+          <div className="lg:col-span-5 lg:pl-10">
+            <div className="bg-[#080808] p-10 border border-white/5 sticky top-36">
+               <h3 className="font-serif text-xl mb-10 border-b border-white/5 pb-6 text-white uppercase font-light italic tracking-widest">Order Summary</h3>
+               <ul className="space-y-8 mb-10 border-b border-white/5 pb-8">
+                 <li className="flex justify-between items-start">
+                   <div className="space-y-1">
+                     <p className="text-[11px] text-white font-medium uppercase tracking-wider">Eternal Diamond Ring</p>
+                     <p className="text-[9px] text-white/30 uppercase tracking-widest">Category: Rings | Qty: 1</p>
+                   </div>
+                   <span className="font-serif text-lg font-light">$1,250</span>
+                 </li>
+                 <li className="flex justify-between items-start">
+                   <div className="space-y-1">
+                     <p className="text-[11px] text-white font-medium uppercase tracking-wider">Luminous Pearl Necklace</p>
+                     <p className="text-[9px] text-white/30 uppercase tracking-widest">Category: Necklaces | Qty: 2</p>
+                   </div>
+                   <span className="font-serif text-lg font-light">$1,700</span>
+                 </li>
+               </ul>
+               
+               <div className="space-y-4 mb-10">
+                 <div className="flex justify-between text-white/30">
+                    <span className="text-[10px] uppercase tracking-[0.4em]">Subtotal</span>
+                    <span className="font-serif text-lg font-light">$2,950</span>
+                 </div>
+                 <div className="flex justify-between text-white/30">
+                    <span className="text-[10px] uppercase tracking-[0.4em]">Delivery</span>
+                    <span className="text-[9px] uppercase tracking-[0.4em] text-gold/60">Complimentary</span>
+                 </div>
+               </div>
+
+               <div className="flex justify-between border-t border-white/10 pt-8 items-end">
+                  <span className="text-[11px] uppercase tracking-[0.6em] text-white/40 mb-1">Total Due</span>
+                  <span className="font-serif text-4xl text-gold font-light tracking-tight">$2,950</span>
+               </div>
+            </div>
           </div>
         </div>
       </div>

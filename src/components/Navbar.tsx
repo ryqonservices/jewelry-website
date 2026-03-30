@@ -7,8 +7,11 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import { useCart } from "@/context/CartContext";
 
+import { usePathname } from "next/navigation";
+
 export function Navbar() {
   const { cartCount } = useCart();
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -26,6 +29,7 @@ export function Navbar() {
     { name: "Collections", href: "/collections" },
     { name: "Gifts", href: "/gifts" },
     { name: "Our Story", href: "/about" },
+    { name: "Boutique", href: "/shop" },
   ];
 
   return (
@@ -43,19 +47,22 @@ export function Navbar() {
           </Link>
 
           <div className="hidden lg:flex flex-1 justify-center items-center gap-12 text-[10px] font-black tracking-[0.5em] uppercase text-white/40">
-            {navLinks.map((link) => (
-              <Link 
-                 key={link.name} 
-                 href={link.href} 
-                 className="hover:text-gold transition-all duration-700 relative group"
-              >
-                {link.name}
-                <motion.span 
-                  className="absolute -bottom-2 left-0 w-0 h-px bg-gold transition-all duration-700 group-hover:w-full"
-                  initial={false}
-                />
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link 
+                   key={link.name} 
+                   href={link.href} 
+                   className={`transition-all duration-700 relative group ${isActive ? "text-gold" : "text-white/40 hover:text-white"}`}
+                >
+                  {link.name}
+                  <motion.span 
+                    className={`absolute -bottom-2 left-0 h-px bg-gold transition-all duration-700 ${isActive ? "w-full" : "w-0 group-hover:w-full"}`}
+                    initial={false}
+                  />
+                </Link>
+              );
+            })}
           </div>
 
           <div className="flex items-center gap-10">

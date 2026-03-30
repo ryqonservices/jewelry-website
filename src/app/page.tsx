@@ -108,63 +108,55 @@ function ScrollVideoImage({
 }
 
 // --- HERO SECTION ---
-function HeroSection({ images, loaded }: { images: HTMLImageElement[]; loaded: boolean }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { scrollYProgress: rawProgress } = useScroll({ target: containerRef, offset: ["start start", "end end"] });
-  const scrollYProgress = useSpring(rawProgress, { stiffness: 80, damping: 30 });
-
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    if (!loaded || !canvasRef.current || images.length === 0) return;
-    const ctx = canvasRef.current.getContext("2d");
-    if (!ctx) return;
-    const frameIndex = Math.min(120, Math.floor(latest * 120));
-    const img = images[frameIndex];
-    if (img) {
-      const scale = Math.max(canvasRef.current.width / img.width, canvasRef.current.height / img.height);
-      const x = (canvasRef.current.width / 2) - (img.width / 2) * scale;
-      const y = (canvasRef.current.height / 2) - (img.height / 2) * scale;
-      ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-      ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
-    }
-  });
+function HeroSection() {
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    const handleResize = () => {
-      if (canvasRef.current) {
-        canvasRef.current.width = window.innerWidth;
-        canvasRef.current.height = window.innerHeight;
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleTimeUpdate = () => {
+      if (video.currentTime >= 5) {
+        video.currentTime = 0;
+        video.play();
       }
     };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+
+    video.addEventListener("timeupdate", handleTimeUpdate);
+    return () => video.removeEventListener("timeupdate", handleTimeUpdate);
   }, []);
 
   return (
-    <section ref={containerRef} className="relative h-[250vh] bg-black">
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
-        <canvas ref={canvasRef} className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-black/10 pointer-events-none" />
+    <section className="relative h-screen w-full overflow-hidden bg-black">
+      <video 
+        ref={videoRef}
+        src="/images/hero-video/hero-luxury-background.mp4"
+        muted
+        playsInline
+        autoPlay
+        className="w-full h-full object-cover"
+      />
+      <div className="absolute inset-0 bg-black/25 pointer-events-none" />
+      <motion.div 
+         initial={{ opacity: 0 }}
+         animate={{ opacity: 1 }}
+         transition={{ duration: 1.5, ease: "easeOut" }}
+         className="absolute inset-0 flex flex-col items-center justify-center text-center p-6"
+      >
         <motion.div 
-           style={{ opacity: useTransform(scrollYProgress, [0, 0.4, 0.6], [1, 1, 0]) }}
-           className="absolute inset-0 flex flex-col items-center justify-center text-center p-6"
+           initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }}
+           className="mb-8"
         >
-          <motion.div 
-             initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.3 }}
-             className="mb-8"
-          >
-             <div className="w-px h-16 bg-gradient-to-t from-gold to-transparent mx-auto" />
-             <span className="text-gold uppercase tracking-[0.5em] text-[10px] md:text-xs font-bold block mt-4">Fine Jewelry • Paris</span>
-          </motion.div>
-          <h1 className="text-7xl md:text-8xl lg:text-[10rem] font-serif text-white tracking-tighter mb-4 drop-shadow-[0_0_30px_rgba(0,0,0,0.8)] font-bold leading-none select-none">AURELIA</h1>
-          <p className="text-white/40 uppercase tracking-[1em] text-[10px] md:text-sm font-light">Experience the Light</p>
-          <motion.div animate={{ y: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 2 }} className="absolute bottom-10 flex flex-col items-center gap-4 text-white/40 group cursor-pointer">
-             <span className="text-[9px] uppercase tracking-widest group-hover:text-gold transition-colors">Begin the Story</span>
-             <ChevronDown className="w-4 h-4 text-gold group-hover:scale-125 transition-transform" />
-          </motion.div>
+           <div className="w-px h-16 bg-gradient-to-t from-gold to-transparent mx-auto" />
+           <span className="text-gold uppercase tracking-[0.5em] text-[10px] md:text-xs font-bold block mt-4">Fine Jewelry • Paris</span>
         </motion.div>
-      </div>
+        <h1 className="text-7xl md:text-8xl lg:text-[10rem] font-serif text-white tracking-tighter mb-4 drop-shadow-[0_0_30px_rgba(0,0,0,0.8)] font-bold font-black leading-none select-none uppercase italic">AURELIA</h1>
+        <p className="text-white/40 uppercase tracking-[1em] text-[10px] md:text-sm font-light">Experience the Light</p>
+        <motion.div animate={{ y: [0, 10, 0] }} transition={{ repeat: Infinity, duration: 2 }} className="absolute bottom-10 flex flex-col items-center gap-4 text-white/40 group cursor-pointer">
+           <span className="text-[9px] uppercase tracking-widest group-hover:text-gold transition-colors">Begin the Story</span>
+           <ChevronDown className="w-4 h-4 text-gold group-hover:scale-125 transition-transform" />
+        </motion.div>
+      </motion.div>
     </section>
   );
 }
@@ -237,8 +229,8 @@ export default function Home() {
 
   return (
     <main className="bg-black selection:bg-gold selection:text-black min-h-screen">
-      {/* 1. HERO (Frames 0-120) */}
-      <HeroSection images={images} loaded={loaded} />
+      {/* 1. HERO (Video Background) */}
+      <HeroSection />
 
       {/* VIDEO FLOW SECTION 1 */}
       <section className="py-40 px-6 md:px-24 max-w-7xl mx-auto overflow-hidden">
@@ -309,10 +301,10 @@ export default function Home() {
          </motion.div>
          <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
             {[
-              { name: 'Rings', icon: '/images/rings/still-life-object.jpg', href: '/collections/rings' },
-              { name: 'Necklaces', icon: '/images/Necklaces/luxury-shine-diamonds-digital-art.jpg', href: '/collections/necklaces' },
-              { name: 'Bracelets', icon: '/images/bracelets/side-view-silver-bracelets-with-diamonds-black-wall.jpg', href: '/collections/bracelets' },
-              { name: 'Earrings', icon: '/images/Earrings/still-life-aesthetic-earrings.jpg', href: '/collections/earrings' }
+              { name: 'Rings', icon: '/images/rings/still-life-object.jpg', href: '/shop?category=rings' },
+              { name: 'Necklaces', icon: '/images/Necklaces/luxury-shine-diamonds-digital-art.jpg', href: '/shop?category=necklaces' },
+              { name: 'Bracelets', icon: '/images/bracelets/side-view-silver-bracelets-with-diamonds-black-wall.jpg', href: '/shop?category=bracelets' },
+              { name: 'Earrings', icon: '/images/Earrings/still-life-aesthetic-earrings.jpg', href: '/shop?category=earrings' }
             ].map((cat, i) => (
               <Link href={cat.href} key={cat.name}>
                 <motion.div 
