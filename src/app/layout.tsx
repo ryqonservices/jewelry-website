@@ -1,18 +1,22 @@
-import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Bodoni_Moda, Tenor_Sans } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { CartProvider } from "@/context/CartContext";
 
-const inter = Inter({
-  variable: "--font-inter",
+const tenor = Tenor_Sans({
+  variable: "--font-tenor",
   subsets: ["latin"],
+  weight: ["400"],
 });
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const bodoni = Bodoni_Moda({
+  variable: "--font-bodoni",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
+
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Aurelia | Luxury Jewelry",
@@ -25,13 +29,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable} scroll-smooth`}>
-      <body className="font-sans bg-cream text-neutral-900 antialiased min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-grow pt-20">
-          {children}
-        </main>
-        <Footer />
+    <html lang="en" className={`${tenor.variable} ${bodoni.variable} scroll-smooth`}>
+      <body className="font-sans bg-[#050505] text-[#F3F3F3] antialiased min-h-screen">
+        <CartProvider>
+          <Navbar />
+          <div className="relative">
+            {children}
+          </div>
+          <Footer />
+        </CartProvider>
       </body>
     </html>
   );

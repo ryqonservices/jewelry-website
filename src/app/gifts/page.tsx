@@ -1,51 +1,117 @@
+"use client";
+
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { Gift } from "lucide-react";
+import { ArrowRight, Gift, Sparkles, Heart, Clock } from "lucide-react";
+import { MOCK_PRODUCTS } from "@/data/mock";
+
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } }
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
+};
 
 export default function GiftsPage() {
-  const categories = [
-    { title: "Gifts for Her", img: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80" },
-    { title: "Gifts for Him", img: "https://images.unsplash.com/photo-1492707892479-7bc8d5a4ee93?auto=format&fit=crop&q=80" },
-    { title: "Anniversary", img: "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?auto=format&fit=crop&q=80" },
-    { title: "Personalized", img: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&q=80" },
-  ];
+  const giftSelections = MOCK_PRODUCTS.slice(0, 4);
 
   return (
-    <div className="bg-cream min-h-screen pt-40 pb-32">
-      <div className="max-w-7xl mx-auto px-6 text-center mb-24">
-        <div className="flex justify-center mb-6">
-          <div className="bg-gold p-4 rounded-full shadow-luxury text-white">
-            <Gift className="w-8 h-8" />
-          </div>
-        </div>
-        <h1 className="text-5xl md:text-7xl font-serif text-neutral-900 mb-6 drop-shadow-sm">The Art of Gifting</h1>
-        <p className="text-neutral-500 max-w-2xl mx-auto text-lg font-light tracking-wide">
-          Give a gift wrapped in signature AURELIA ribbon. From delicate pendants to statement timepieces, find the perfect expression of your affection.
-        </p>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
-        {categories.map((c, i) => (
-          <Link href="/shop" key={i} className="group relative h-[400px] rounded-[3rem] overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-700">
-            <Image src={c.img} alt={c.title} fill className="object-cover group-hover:scale-110 transition-transform duration-1000" />
-            <div className="absolute inset-0 bg-neutral-900/40 group-hover:bg-neutral-900/20 transition-colors duration-500" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <h2 className="text-4xl font-serif text-white tracking-widest drop-shadow-md">{c.title}</h2>
-            </div>
-          </Link>
-        ))}
-      </div>
+    <div className="bg-black min-h-screen text-white font-sans selection:bg-gold selection:text-black pt-20">
       
-      <div className="bg-neutral-900 text-cream py-24 rounded-[3rem] mx-6 px-6 text-center shadow-2xl">
-         <h2 className="text-4xl font-serif mb-6 drop-shadow-lg">Signature Packaging</h2>
-         <p className="text-white/80 max-w-xl mx-auto font-light leading-relaxed mb-10 text-lg">
-           Every purchase arrives in our iconic cream leather box, tied with golden ribbon, complete with a personalized message card.
-         </p>
-         <button className="bg-gold hover:bg-gold/80 transition-colors text-white px-10 py-4 uppercase tracking-widest text-xs font-bold rounded-full shadow-lg">
-           View Gift Guide
-         </button>
-      </div>
+      {/* 1. ATMOSPHERIC GIFT HERO */}
+      <section className="relative h-[80vh] w-full overflow-hidden">
+        <Image 
+          src="/images/bracelets/luxury-jewellery-display (1).jpg" 
+          alt="Gifts Hero" 
+          fill 
+          priority
+          className="object-cover opacity-70" 
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black" />
+        <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1.5 }}
+            className="space-y-6"
+          >
+            <Gift className="w-10 h-10 text-gold mx-auto mb-8 opacity-60" />
+            <h1 className="text-6xl md:text-[10rem] font-serif text-white tracking-tighter leading-none italic uppercase drop-shadow-2xl">The Perfect <br/>Gesture</h1>
+            <p className="text-white/60 uppercase tracking-[0.8em] text-[10px] md:text-sm font-black">Luxurious Gifting Collections</p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* 2. THE ART OF PRESENTATION */}
+      <section className="py-40 px-6 max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row items-center gap-20">
+           <div className="md:w-1/2 space-y-12">
+              <div className="space-y-6">
+                <Sparkles className="w-8 h-8 text-gold opacity-60" />
+                <h2 className="text-5xl md:text-8x font-serif text-white tracking-tighter leading-none italic uppercase">Beyond <br/>the Jewel</h2>
+                <div className="w-12 h-px bg-gold/50" />
+              </div>
+              <p className="text-white/50 text-xl font-light leading-relaxed tracking-wide italic">
+                Every Aurelia gift is an experience from the moment it is received. Our signature packaging, handcrafted in heavy velvet and gold-stamped linen, ensures that the anticipation of discovery is as beautiful as the gift itself.
+              </p>
+              <ul className="space-y-6">
+                 <li className="flex items-center gap-4 text-white/40 uppercase tracking-[0.4em] text-[10px] font-black"><Heart className="w-4 h-4 text-gold" /> Personalized Gift Notes</li>
+                 <li className="flex items-center gap-4 text-white/40 uppercase tracking-[0.4em] text-[10px] font-black"><Sparkles className="w-4 h-4 text-gold" /> Signature Velvet Box</li>
+                 <li className="flex items-center gap-4 text-white/40 uppercase tracking-[0.4em] text-[10px] font-black"><Clock className="w-4 h-4 text-gold" /> Priority Secure Delivery</li>
+              </ul>
+           </div>
+           <div className="md:w-1/2">
+              <div className="aspect-square rounded-full overflow-hidden border border-white/10 shadow-[0_0_80px_rgba(212,175,55,0.05)] relative p-20">
+                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(212,175,55,0.1)_0%,_transparent_70%)]" />
+                 <div className="relative w-full h-full rounded-full overflow-hidden border border-white/5">
+                   <Image src="/images/Necklaces/luxury-shine-diamonds-digital-art.jpg" alt="Gift Box" fill className="object-cover" />
+                 </div>
+              </div>
+           </div>
+        </div>
+      </section>
+
+      {/* 3. CURATED SELECTION */}
+      <section className="py-40 bg-[#080808]">
+        <div className="max-w-7xl mx-auto px-6">
+           <div className="text-center mb-24 space-y-4">
+             <h2 className="text-5xl md:text-8xl font-serif text-white italic tracking-tighter leading-none uppercase">Curated Gems</h2>
+             <p className="text-gold uppercase tracking-[0.5em] text-[10px] font-black">For life&apos;s extraordinary chapters</p>
+           </div>
+           
+           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
+              {giftSelections.map((p, i) => (
+                <motion.div 
+                  key={p.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                >
+                  <Link href={`/product/${p.id}`} className="group text-center space-y-8">
+                    <div className="relative aspect-[3.5/4.5] bg-[#0c0c0c] overflow-hidden rounded-[2.5rem] shadow-2xl border border-white/5 group-hover:border-gold/30 transition-all duration-700">
+                      <Image src={p.image} alt={p.name} fill className="object-cover transition-transform duration-1000 group-hover:scale-110 p-4"/>
+                    </div>
+                    <div className="space-y-2">
+                       <h3 className="font-serif text-2xl md:text-3xl text-white italic group-hover:text-gold transition-colors">{p.name}</h3>
+                       <p className="text-white/60 tracking-tight text-xl font-serif italic">${p.price.toLocaleString()}</p>
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
+           </div>
+           
+           <div className="mt-24 text-center">
+              <Link href="/shop" className="inline-block px-14 py-7 border border-gold text-gold uppercase tracking-[0.4em] text-[10px] font-black rounded-3xl hover:bg-gold hover:text-black transition-all shadow-luxury">
+                 Explore Gift Concierge
+              </Link>
+           </div>
+        </div>
+      </section>
+
     </div>
   );
 }
-
