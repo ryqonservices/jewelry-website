@@ -6,8 +6,8 @@ import { ShoppingBag, Menu, X, Search, Gem } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { useCart } from "@/context/CartContext";
-
 import { usePathname } from "next/navigation";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function Navbar() {
   const { cartCount } = useCart();
@@ -34,30 +34,34 @@ export function Navbar() {
 
   return (
     <>
-      <nav className={`fixed top-0 w-full z-50 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-        isScrolled ? "bg-black/90 py-5 border-b border-gold/10 shadow-[0_20px_40px_rgba(0,0,0,0.4)]" : "bg-transparent py-10"
-      } backdrop-blur-3xl`}>
-        <div className="max-w-[1440px] mx-auto px-8 md:px-16 flex justify-between items-center text-white">
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        isScrolled 
+          ? "bg-background/80 py-4 border-b border-border/50 shadow-sm backdrop-blur-xl" 
+          : "bg-transparent py-8"
+      }`}>
+        <div className="max-w-[1440px] mx-auto px-6 md:px-12 flex justify-between items-center text-foreground">
           
-          <Link href="/" className="hover:text-gold transition-all duration-700 flex items-center gap-4 group">
-            <Gem className="w-6 h-6 text-gold group-hover:rotate-[360deg] transition-transform duration-1000" />
-            <span className="text-3xl font-serif tracking-tighter uppercase italic font-black">
-              Aurelia
-            </span>
-          </Link>
+          <div className="flex items-center gap-8">
+            <Link href="/" className="hover:opacity-70 transition-all duration-500 flex items-center gap-3 group">
+              <Gem className="w-5 h-5 text-foreground group-hover:rotate-[360deg] transition-transform duration-1000" />
+              <span className="text-2xl font-serif tracking-tighter uppercase italic font-bold">
+                Aurelia
+              </span>
+            </Link>
+          </div>
 
-          <div className="hidden lg:flex flex-1 justify-center items-center gap-12 text-[10px] font-black tracking-[0.5em] uppercase text-white/40">
+          <div className="hidden lg:flex flex-1 justify-center items-center gap-10 text-[10px] font-black tracking-[0.4em] uppercase">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               return (
                 <Link 
                    key={link.name} 
                    href={link.href} 
-                   className={`transition-all duration-700 relative group ${isActive ? "text-gold" : "text-white/40 hover:text-white"}`}
+                   className={`transition-all duration-500 relative group ${isActive ? "text-foreground" : "text-foreground/40 hover:text-foreground"}`}
                 >
                   {link.name}
                   <motion.span 
-                    className={`absolute -bottom-2 left-0 h-px bg-gold transition-all duration-700 ${isActive ? "w-full" : "w-0 group-hover:w-full"}`}
+                    className={`absolute -bottom-1.5 left-0 h-[1.5px] bg-foreground transition-all duration-500 ${isActive ? "w-full" : "w-0 group-hover:w-full"}`}
                     initial={false}
                   />
                 </Link>
@@ -65,25 +69,31 @@ export function Navbar() {
             })}
           </div>
 
-          <div className="flex items-center gap-10">
-            <Link href="/search" className="text-white/40 hover:text-gold transition-all duration-500 hidden sm:block">
+          <div className="flex items-center gap-6 md:gap-8">
+            <div className="hidden sm:block">
+              <ThemeToggle />
+            </div>
+            
+            <Link href="/search" className="text-foreground/40 hover:text-foreground transition-all duration-500 hidden sm:block">
               <Search className="w-5 h-5" />
             </Link>
-            <Link href="/cart" className="text-white/40 hover:text-gold transition-all duration-500 relative group flex items-center gap-2">
+
+            <Link href="/cart" className="text-foreground/40 hover:text-foreground transition-all duration-500 relative group flex items-center gap-2">
               <ShoppingBag className="w-5 h-5" />
               <div className="flex flex-col -space-y-1">
                  <motion.span 
                    key={cartCount}
                    initial={{ scale: 0.5, opacity: 0 }}
                    animate={{ scale: 1, opacity: 1 }}
-                   className="text-[10px] font-black uppercase tracking-widest text-gold"
+                   className="text-[10px] font-bold uppercase tracking-widest text-foreground"
                  >
                    {cartCount}
                  </motion.span>
               </div>
             </Link>
-            <button className="md:hidden text-white/40 hover:text-gold transition-all" onClick={() => setIsMobileMenuOpen(true)}>
-               <Menu className="w-7 h-7" />
+
+            <button className="lg:hidden text-foreground/40 hover:text-foreground transition-all" onClick={() => setIsMobileMenuOpen(true)}>
+               <Menu className="w-6 h-6" />
             </button>
           </div>
 
@@ -97,23 +107,26 @@ export function Navbar() {
             animate={{ opacity: 1, backdropFilter: "blur(20px)" }}
             exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
             transition={{ duration: 0.4 }}
-            className="fixed inset-0 z-[60] bg-black/95 text-white flex flex-col font-sans"
+            className="fixed inset-0 z-[60] bg-background/95 text-foreground flex flex-col font-sans"
           >
-            <div className="px-6 py-6 flex justify-between items-center border-b border-white/10">
+            <div className="px-6 py-6 flex justify-between items-center border-b border-border">
               <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
                  <Gem className="w-5 h-5 opacity-80" />
               </Link>
-              <button onClick={() => setIsMobileMenuOpen(false)}>
-                <X className="w-6 h-6 opacity-80" />
-              </button>
+              <div className="flex items-center gap-4">
+                <ThemeToggle />
+                <button onClick={() => setIsMobileMenuOpen(false)}>
+                  <X className="w-6 h-6 opacity-80" />
+                </button>
+              </div>
             </div>
-            <div className="flex flex-col gap-6 px-8 py-12 flex-1 overflow-y-auto">
+            <div className="flex flex-col gap-6 px-8 py-10 flex-1 overflow-y-auto">
               {navLinks.map((link, i) => (
                  <motion.div 
                     initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05 + 0.1 }}
                     key={link.name}
                  >
-                    <Link href={link.href} className="text-3xl font-semibold tracking-tight hover:text-[#0071e3] transition-colors block border-b border-white/10 pb-4" onClick={() => setIsMobileMenuOpen(false)}>
+                    <Link href={link.href} className="text-2xl font-bold tracking-tight hover:opacity-60 transition-colors block border-b border-border pb-4" onClick={() => setIsMobileMenuOpen(false)}>
                       {link.name}
                     </Link>
                  </motion.div>
