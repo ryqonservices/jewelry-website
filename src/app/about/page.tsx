@@ -6,14 +6,14 @@ export default function AboutPage() {
   return (
     <div className="bg-cream min-h-screen">
       <div className="relative h-[60vh] w-full mt-24">
-        <Image 
-          src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80" 
-          alt="Our Heritage" 
-          fill 
+        <Image
+          src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&q=80"
+          alt="Our Heritage"
+          fill
           className="object-cover"
         />
         <div className="absolute inset-0 bg-neutral-900/40 flex items-center justify-center">
-          <h1 className="text-5xl md:text-7xl font-serif text-white tracking-widest text-center">Our Story<br/><span className="text-2xl font-light italic mt-4 block">A Legacy of Light</span></h1>
+          <h1 className="text-5xl md:text-7xl font-serif text-white tracking-widest text-center">Our Story<br /><span className="text-2xl font-light italic mt-4 block">A Legacy of Light</span></h1>
         </div>
       </div>
 
