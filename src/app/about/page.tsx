@@ -5,12 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Sparkles, Shield, Clock, MapPin, Globe } from "lucide-react";
 
-const fadeInUp = {
+const fadeInUp: import("framer-motion").Variants = {
   hidden: { opacity: 0, y: 30 },
   visible: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } }
 };
 
-const staggerContainer = {
+const staggerContainer: import("framer-motion").Variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { staggerChildren: 0.2 } }
 };
