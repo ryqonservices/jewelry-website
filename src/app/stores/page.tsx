@@ -11,31 +11,38 @@ export default function StoresPage() {
   ];
 
   return (
-    <div className="bg-cream min-h-screen pt-40 pb-24">
+    <div className="bg-background min-h-screen pt-40 pb-24 text-foreground selection:bg-accent selection:text-background">
       <div className="max-w-7xl mx-auto px-6 text-center mb-24">
-        <h1 className="text-5xl md:text-7xl font-serif text-neutral-900 mb-6 drop-shadow-sm">Our Boutiques</h1>
-        <p className="text-neutral-500 max-w-2xl mx-auto text-lg font-light tracking-wide">
+        <h1 className="text-5xl md:text-7xl font-serif text-foreground mb-6 tracking-tighter italic uppercase">Our Boutiques</h1>
+        <p className="text-foreground/50 max-w-2xl mx-auto text-lg font-light tracking-wide italic">
           Step into the world of AURELIA. Experience our exceptional creations in person and enjoy personalized consultations in luxuriously appointed spaces.
         </p>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12">
+      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-12 pb-32">
         {stores.map((store, i) => (
-          <div key={i} className="bg-white rounded-[3rem] overflow-hidden shadow-lg group hover:shadow-2xl transition-all duration-500 border border-neutral-100">
-            <div className="relative h-64 w-full overflow-hidden">
-              <Image src={store.img} alt={store.city} fill className="object-cover group-hover:scale-105 transition-transform duration-1000" />
-              <div className="absolute inset-0 bg-neutral-900/20" />
+          <div key={i} className="bg-subtle rounded-[3rem] overflow-hidden shadow-xl group transition-all duration-500 border border-border">
+            <div className="relative h-72 w-full overflow-hidden">
+              <Image src={store.img} alt={store.city} fill className="object-cover group-hover:scale-105 transition-transform duration-[2s]" />
+              <div className="absolute inset-0 bg-background/20 group-hover:bg-transparent transition-colors duration-1000" />
             </div>
-            <div className="p-10 text-center">
-              <h2 className="text-3xl font-serif text-neutral-900 mb-6">{store.city}</h2>
-              <div className="flex flex-col gap-3 items-center text-neutral-500 text-sm font-light mb-8">
-                <span className="flex items-center gap-2"><MapPin className="w-4 h-4 text-gold"/> {store.addr}</span>
-                <span className="flex items-center gap-2"><Clock className="w-4 h-4 text-gold"/> {store.hours}</span>
-                <span className="flex items-center gap-2"><Phone className="w-4 h-4 text-gold"/> +1 (800) 123-4567</span>
+            <div className="p-12 text-center space-y-10">
+              <div className="space-y-4">
+                 <h2 className="text-4xl font-serif text-foreground italic uppercase tracking-tight">{store.city}</h2>
+                 <div className="w-12 h-px bg-accent/20 mx-auto" />
               </div>
-              <Link href="/appointment" className="uppercase tracking-widest text-xs font-bold text-neutral-900 border-b-2 border-gold pb-1 hover:text-gold transition-colors">
-                Book Appointment Here
-              </Link>
+
+              <div className="flex flex-col gap-5 items-center text-foreground/40 text-xs font-medium uppercase tracking-widest">
+                <span className="flex items-center gap-3"><MapPin className="w-4 h-4 text-accent/60"/> {store.addr}</span>
+                <span className="flex items-center gap-3"><Clock className="w-4 h-4 text-accent/60"/> {store.hours}</span>
+                <span className="flex items-center gap-3"><Phone className="w-4 h-4 text-accent/60"/> +1 (800) 123-4567</span>
+              </div>
+
+              <div className="pt-4">
+                <Link href="/appointment" className="inline-block px-10 py-5 bg-foreground text-background uppercase tracking-[0.4em] text-[9px] font-black rounded-full hover:opacity-90 transition-all shadow-xl">
+                   Request Private Discovery
+                </Link>
+              </div>
             </div>
           </div>
         ))}

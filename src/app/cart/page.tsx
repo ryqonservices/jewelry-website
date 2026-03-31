@@ -10,135 +10,149 @@ export default function Cart() {
   const { cart, updateQuantity, removeFromCart, subtotal } = useCart();
 
   return (
-    <div className="bg-black min-h-screen text-white font-sans selection:bg-gold selection:text-black pt-32 pb-40">
-      <div className="max-w-[1250px] mx-auto px-6 md:px-12">
-        
-        {/* MINIMAL HEADER */}
-        <motion.div 
+    <div className="bg-background min-h-screen text-foreground font-sans selection:bg-accent selection:text-background pt-32 pb-40">
+      <div className="max-w-[1200px] mx-auto px-6 md:px-12">
+
+        {/* FORMAL HEADER */}
+        <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex justify-between items-end mb-16 border-b border-white/5 pb-10"
+          className="flex justify-between items-end mb-20 border-b border-border pb-12"
         >
-          <div className="space-y-2">
-            <h1 className="text-4xl md:text-5xl font-serif text-white italic tracking-tighter uppercase font-black">Shopping Bag</h1>
-            <p className="text-gold uppercase tracking-[0.4em] text-[8px] font-black opacity-60 italic">Your Personal Selection ({cart.length})</p>
+          <div className="space-y-4">
+            <h1 className="text-3xl md:text-5xl font-serif text-foreground tracking-tight uppercase font-light italic">Shopping Bag</h1>
+            <p className="text-accent uppercase tracking-[0.6em] text-[9px] font-bold opacity-40">Your Curated Pieces ({cart.length})</p>
           </div>
-          <Link href="/shop" className="text-white/30 hover:text-gold transition-all text-[9px] uppercase tracking-[0.4em] font-black border-b border-transparent hover:border-gold pb-1.5 transition-all">Continue to Boutique</Link>
+          <Link href="/shop" className="text-foreground/40 hover:text-accent transition-all text-[10px] uppercase tracking-[0.4em] font-medium border-b border-border hover:border-accent pb-1 px-1">
+            Back to Boutique
+          </Link>
         </motion.div>
 
         {cart.length === 0 ? (
-          <div className="text-center py-40 space-y-8">
-            <p className="text-white/20 font-light text-xl italic tracking-wide">No pieces currently selected.</p>
-            <Link href="/shop" className="inline-block px-10 py-5 bg-gold text-black uppercase tracking-[0.4em] text-[10px] font-black rounded-full hover:bg-white transition-all">
-              Browse Collections
+          <div className="text-center py-48 space-y-10">
+            <p className="text-foreground/20 font-light text-lg italic tracking-widest">Your selection is currently empty.</p>
+            <Link href="/shop" className="inline-block px-12 py-5 border border-border text-foreground uppercase tracking-[0.5em] text-[10px] font-medium rounded-full hover:bg-foreground hover:text-background transition-all duration-700">
+              Explore Collections
             </Link>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 xl:gap-24 items-start">
-            
-            {/* COMPACT ITEMS LIST (COLUMN 8) */}
-            <div className="lg:col-span-8 space-y-12">
+
+            {/* ITEMS LIST */}
+            <div className="lg:col-span-7 space-y-16">
               <AnimatePresence mode="popLayout">
-                {cart.map((item, index) => (
-                  <motion.div 
+                {cart.map((item) => (
+                  <motion.div
                     key={`${item.id}-${item.metal}-${item.size}`}
                     layout
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0, x: -10 }}
-                    className="flex flex-col md:flex-row gap-8 pb-12 border-b border-white/5 last:border-0"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    className="flex flex-col md:flex-row gap-10 pb-16 border-b border-border last:border-0"
                   >
-                    {/* Compact Image */}
-                    <Link href={`/product/${item.id}`} className="relative w-32 md:w-44 aspect-[4/5] bg-[#0c0c0c] rounded-3xl overflow-hidden border border-white/5 group flex-shrink-0 shadow-lg">
-                      <Image src={item.image} alt={item.name} fill className="object-cover transition-transform duration-1000 group-hover:scale-105 p-3" />
+                    {/* Item Image */}
+                    <Link href={`/product/${item.id}`} className="relative w-32 md:w-48 aspect-[4/5] bg-subtle border border-border overflow-hidden group flex-shrink-0">
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        fill
+                        className="object-cover transition-transform duration-[1.5s] group-hover:scale-105 p-4 opacity-90 group-hover:opacity-100"
+                      />
                     </Link>
 
-                    {/* Compact Content */}
-                    <div className="flex-grow flex flex-col justify-between py-2 space-y-6">
-                      <div className="space-y-4">
-                        <div className="flex justify-between items-start gap-4">
-                          <div>
-                            <p className="text-gold uppercase tracking-[0.4em] text-[8px] font-black mb-1 opacity-70">{item.category}</p>
-                            <Link href={`/product/${item.id}`} className="font-serif text-2xl md:text-3xl text-white italic hover:text-gold transition-all leading-tight uppercase font-black uppercase">
+                    {/* Item Content */}
+                    <div className="flex-grow flex flex-col justify-between py-1">
+                      <div className="space-y-6">
+                        <div className="flex justify-between items-start gap-6">
+                          <div className="space-y-2">
+                            <p className="text-accent uppercase tracking-[0.5em] text-[8px] font-bold">{item.category}</p>
+                            <Link href={`/product/${item.id}`} className="font-serif text-2xl md:text-3xl text-foreground hover:opacity-70 transition-opacity uppercase font-light tracking-tight italic">
                               {item.name}
                             </Link>
+                            <div className="flex gap-4 pt-2">
+                              {item.metal && <span className="text-foreground/70 text-[9px] uppercase tracking-widest font-medium">Metal: {item.metal}</span>}
+                              {item.size && <span className="text-foreground/70 text-[9px] uppercase tracking-widest font-medium px-4 border-l border-border">Size: {item.size}</span>}
+                            </div>
                           </div>
-                          <p className="font-serif text-2xl italic tracking-tight text-white font-black opacity-90">${(item.price * item.quantity).toLocaleString()}</p>
-                        </div>
-                        <div className="flex gap-4">
-                           {item.metal && <span className="text-white/20 text-[8px] font-black uppercase tracking-widest border border-white/5 px-4 py-1.5 rounded-full bg-white/5">Metal: {item.metal}</span>}
-                           {item.size && <span className="text-white/20 text-[8px] font-black uppercase tracking-widest border border-white/5 px-4 py-1.5 rounded-full bg-white/5">Size: {item.size}</span>}
+                          <p className="font-serif text-xl md:text-2xl text-foreground/90 font-light">${(item.price * item.quantity).toLocaleString()}</p>
                         </div>
                       </div>
 
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center border border-white/5 w-32 h-12 rounded-xl overflow-hidden bg-white/5 px-1">
-                          <button onClick={() => updateQuantity(item.id, -1)} className="w-9 h-9 flex items-center justify-center text-white/20 hover:text-gold transition-all"><Minus className="w-3.5 h-3.5" /></button>
-                          <span className="flex-grow text-center text-[10px] font-black font-sans">{item.quantity}</span>
-                          <button onClick={() => updateQuantity(item.id, 1)} className="w-9 h-9 flex items-center justify-center text-white/20 hover:text-gold transition-all"><Plus className="w-3.5 h-3.5" /></button>
+                      <div className="flex items-center justify-between mt-10">
+                        <div className="flex items-center border border-border px-2 h-10">
+                          <button onClick={() => updateQuantity(item.id, -1)} className="w-8 h-8 flex items-center justify-center text-foreground/50 hover:text-accent transition-all"><Minus className="w-3 h-3" /></button>
+                          <span className="w-10 text-center text-[11px] font-bold text-foreground">{item.quantity}</span>
+                          <button onClick={() => updateQuantity(item.id, 1)} className="w-8 h-8 flex items-center justify-center text-foreground/50 hover:text-accent transition-all"><Plus className="w-3 h-3" /></button>
                         </div>
-                        <button onClick={() => removeFromCart(item.id)} className="flex items-center gap-2 text-[8px] text-white/20 hover:text-red-500 transition-all uppercase tracking-[0.4em] font-black">
-                          <X className="w-3.5 h-3.5" /> Remove
+                        <button onClick={() => removeFromCart(item.id)} className="text-[9px] text-foreground/40 hover:text-red-500 transition-all uppercase tracking-[0.3em] font-bold border-b border-transparent hover:border-red-400/20 pb-0.5">
+                          Remove Piece
                         </button>
                       </div>
                     </div>
                   </motion.div>
                 ))}
               </AnimatePresence>
-              
-              {/* COMPACT TRUST BADGES */}
-              <div className="pt-8 border-t border-white/5 grid grid-cols-2 gap-8 opacity-40">
-                 <div className="flex items-center gap-4">
-                    <Truck className="w-4 h-4 text-gold" />
-                    <p className="text-[8px] uppercase tracking-[0.3em] font-black">Insured Priority Express</p>
-                 </div>
-                 <div className="flex items-center gap-4 justify-end">
-                    <ShieldCheck className="w-4 h-4 text-gold" />
-                    <p className="text-[8px] uppercase tracking-[0.3em] font-black">Signature Certification</p>
-                 </div>
+
+              {/* TRUST BADGES */}
+              <div className="pt-12 border-t border-border flex justify-between items-center opacity-60">
+                <div className="flex items-center gap-4">
+                  <Truck className="w-4 h-4 text-accent" />
+                  <p className="text-[9px] uppercase tracking-[0.4em] font-bold text-foreground">Complimentary Insured Delivery</p>
+                </div>
+                <div className="flex items-center gap-4">
+                  <ShieldCheck className="w-4 h-4 text-accent" />
+                  <p className="text-[9px] uppercase tracking-[0.4em] font-bold text-foreground">Authenticity Guaranteed</p>
+                </div>
               </div>
             </div>
 
-            {/* MINIMAL SIDE SUMMARY (COLUMN 4) */}
-            <div className="lg:col-span-4 self-start sticky top-36">
-              <div className="bg-[#080808]/50 backdrop-blur-3xl p-12 rounded-[3rem] border border-white/10 space-y-20 shadow-2xl relative overflow-hidden group">
-                 <div className="absolute top-0 right-0 w-32 h-32 bg-gold/5 blur-3xl rounded-full -translate-y-1/2 translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                 
-                 <div className="space-y-10">
-                   <h2 className="font-serif text-3xl italic uppercase border-b border-white/5 pb-8 font-black tracking-tighter">Summary</h2>
-                   <div className="space-y-8 px-2">
-                      <div className="flex justify-between items-center text-white/30">
-                        <span className="text-[9px] uppercase tracking-[0.5em] font-black">Subtotal</span>
-                        <span className="font-serif text-2xl tracking-tight">${subtotal.toLocaleString()}</span>
+            {/* SUMMARY SIDEBAR */}
+            <div className="lg:col-span-5 self-start sticky top-36">
+              <div className="bg-subtle p-12 md:p-14 border border-border rounded-[2.5rem] space-y-16 shadow-2xl relative overflow-hidden">
+                {/* Subtle Ambient Background Highlight */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-accent/[0.04] blur-3xl rounded-full" />
+
+                <div className="space-y-10 relative z-10">
+                  <h2 className="font-serif text-3xl text-foreground uppercase font-light tracking-[0.05em] italic border-b border-border pb-8 text-center">Order Summary</h2>
+                  <div className="space-y-8 pt-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-[11px] uppercase tracking-[0.4em] text-foreground/60 font-bold italic">Subtotal</span>
+                      <span className="font-serif text-2xl font-light text-foreground">${subtotal.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-[11px] uppercase tracking-[0.4em] text-foreground/60 font-bold italic">Shipping</span>
+                      <div className="text-right">
+                        <span className="text-[10px] uppercase tracking-[0.3em] text-accent font-black block">Complimentary</span>
+                        <span className="text-[9px] text-foreground/40 uppercase tracking-widest italic font-bold">Insured Global Logistics</span>
                       </div>
-                      <div className="flex justify-between items-center text-white/30">
-                        <span className="text-[9px] uppercase tracking-[0.5em] font-black">Express Delivery</span>
-                        <span className="text-[8px] uppercase tracking-[0.4em] text-gold font-bold bg-gold/5 px-4 py-1.5 rounded-full border border-gold/10">Complimentary</span>
-                      </div>
-                   </div>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="space-y-10 pt-4 border-t border-white/5">
-                  <div className="flex justify-between items-end px-2">
-                    <span className="text-[10px] uppercase tracking-[0.8em] font-black text-white/20 mb-3">Total</span>
-                    <span className="font-serif text-6xl tracking-tighter italic text-gold font-black leading-none">${subtotal.toLocaleString()}</span>
+                <div className="space-y-12 pt-6 relative z-10">
+                  <div className="flex justify-between items-end border-t border-border pt-10">
+                    <div className="space-y-2">
+                      <span className="text-[12px] uppercase tracking-[0.6em] text-foreground font-black block">Grand Total</span>
+                      <span className="text-[9px] text-foreground/40 uppercase tracking-[0.3em] font-bold italic">Reflective of all heritage curation</span>
+                    </div>
+                    <span className="font-serif text-5xl text-accent font-light tracking-tighter drop-shadow-sm">${subtotal.toLocaleString()}</span>
                   </div>
-                  
-                  <div className="space-y-8">
-                    <Link 
-                      href="/checkout" 
-                      className="w-full bg-white text-black py-8 uppercase tracking-[0.6em] text-[10px] font-black rounded-3xl flex items-center justify-center gap-4 hover:shadow-[0_0_50px_rgba(212,175,55,0.4)] hover:bg-gold transition-all duration-1000 group/btn"
+
+                  <div className="space-y-10">
+                    <Link
+                      href="/checkout"
+                      className="w-full bg-foreground text-background py-6 uppercase tracking-[0.6em] text-[11px] font-black flex items-center justify-center gap-5 hover:opacity-95 transition-all duration-700 group/btn rounded-2xl shadow-xl hover:shadow-accent/5 border border-transparent"
                     >
-                      Checkout Securely <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-2 transition-transform" />
+                      Proceed <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-3 transition-transform duration-500" />
                     </Link>
-                    
-                    <div className="flex flex-col items-center gap-4 text-center px-4">
-                       <p className="text-[7px] uppercase tracking-[0.6em] text-white/20 font-black">Encrypted SSL • GIA Authenticated • Elite Logistics</p>
-                       <div className="flex gap-4 opacity-10">
-                          <div className="w-10 h-6 bg-white rounded-sm" />
-                          <div className="w-10 h-6 bg-white rounded-sm" />
-                          <div className="w-10 h-6 bg-white rounded-sm" />
-                       </div>
+
+                    <div className="flex flex-col items-center gap-8 opacity-70">
+                      <p className="text-[9px] uppercase tracking-[0.5em] text-center font-black leading-loose text-foreground max-w-sm">Secure Merchant Encrypted Processing</p>
+                      <div className="flex gap-6 grayscale opacity-60">
+                        <div className="w-10 h-6 border border-border rounded-[2px] bg-foreground/5 shadow-inner" />
+                        <div className="w-10 h-6 border border-border rounded-[2px] bg-foreground/5 shadow-inner" />
+                        <div className="w-10 h-6 border border-border rounded-[2px] bg-foreground/5 shadow-inner" />
+                      </div>
                     </div>
                   </div>
                 </div>
