@@ -36,13 +36,13 @@ export function Navbar() {
     <>
       <nav className={`fixed top-0 w-full z-50 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
         isScrolled 
-          ? "bg-background/80 py-4 border-b border-border/50 shadow-sm backdrop-blur-xl" 
-          : "bg-transparent py-8"
+          ? "bg-background/90 py-5 border-b border-border/40 shadow-sm backdrop-blur-2xl" 
+          : "bg-gradient-to-b from-background/40 to-transparent py-8"
       }`}>
-        <div className="max-w-[1440px] mx-auto px-6 md:px-12 flex justify-between items-center text-foreground">
+        <div className="max-w-[1440px] mx-auto px-8 md:px-12 flex justify-between items-center text-foreground">
           
-          <div className="flex items-center gap-8">
-            <Link href="/" className="hover:opacity-70 transition-all duration-500 flex items-center gap-3 group">
+          <div className="flex items-center gap-10">
+            <Link href="/" className="hover:opacity-80 transition-all duration-500 flex items-center gap-3 group">
               <Gem className="w-5 h-5 text-foreground group-hover:rotate-[360deg] transition-transform duration-1000" />
               <span className="text-2xl font-serif tracking-tighter uppercase italic font-bold">
                 Aurelia
@@ -50,18 +50,18 @@ export function Navbar() {
             </Link>
           </div>
 
-          <div className="hidden lg:flex flex-1 justify-center items-center gap-10 text-[10px] font-black tracking-[0.4em] uppercase">
+          <div className="hidden lg:flex flex-1 justify-center items-center gap-12 text-[12px] font-serif font-medium tracking-[0.3em] uppercase italic">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
               return (
                 <Link 
                    key={link.name} 
                    href={link.href} 
-                   className={`transition-all duration-500 relative group ${isActive ? "text-foreground" : "text-foreground/40 hover:text-foreground"}`}
+                   className={`transition-all duration-500 relative group drop-shadow-md ${isActive ? "text-foreground" : "text-foreground/80 hover:text-foreground"}`}
                 >
                   {link.name}
                   <motion.span 
-                    className={`absolute -bottom-1.5 left-0 h-[1.5px] bg-foreground transition-all duration-500 ${isActive ? "w-full" : "w-0 group-hover:w-full"}`}
+                    className={`absolute -bottom-1.5 left-1/2 -translate-x-1/2 h-[1px] bg-foreground transition-all duration-500 ${isActive ? "w-full" : "w-0 group-hover:w-full"}`}
                     initial={false}
                   />
                 </Link>
@@ -69,31 +69,31 @@ export function Navbar() {
             })}
           </div>
 
-          <div className="flex items-center gap-6 md:gap-8">
+          <div className="flex items-center gap-8 md:gap-10">
             <div className="hidden sm:block">
               <ThemeToggle />
             </div>
             
-            <Link href="/search" className="text-foreground/40 hover:text-foreground transition-all duration-500 hidden sm:block">
-              <Search className="w-5 h-5" />
+            <Link href="/search" className="text-foreground/80 hover:text-foreground transition-all duration-500 hidden sm:block">
+              <Search className="w-5 h-5 drop-shadow-sm" />
             </Link>
 
-            <Link href="/cart" className="text-foreground/40 hover:text-foreground transition-all duration-500 relative group flex items-center gap-2">
-              <ShoppingBag className="w-5 h-5" />
+            <Link href="/cart" className="text-foreground/80 hover:text-foreground transition-all duration-500 relative group flex items-center gap-2">
+              <ShoppingBag className="w-5 h-5 drop-shadow-sm" />
               <div className="flex flex-col -space-y-1">
                  <motion.span 
                    key={cartCount}
                    initial={{ scale: 0.5, opacity: 0 }}
                    animate={{ scale: 1, opacity: 1 }}
-                   className="text-[10px] font-bold uppercase tracking-widest text-foreground"
+                   className="text-[12px] font-serif font-bold uppercase tracking-widest text-foreground drop-shadow-sm"
                  >
                    {cartCount}
                  </motion.span>
               </div>
             </Link>
 
-            <button className="lg:hidden text-foreground/40 hover:text-foreground transition-all" onClick={() => setIsMobileMenuOpen(true)}>
-               <Menu className="w-6 h-6" />
+            <button className="lg:hidden text-foreground/80 hover:text-foreground transition-all" onClick={() => setIsMobileMenuOpen(true)}>
+               <Menu className="w-6 h-6 drop-shadow-sm" />
             </button>
           </div>
 
