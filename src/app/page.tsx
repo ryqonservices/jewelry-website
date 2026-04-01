@@ -7,9 +7,6 @@ import Image from "next/image";
 import { ShoppingBag, ChevronDown, Bell, Shield, Sparkles, Globe, ArrowRight, Heart } from "lucide-react";
 import { MOCK_PRODUCTS } from "@/data/mock";
 
-// Total frames we have in the public folder
-const TOTAL_FRAMES = 300;
-
 // --- ANIMATION VARIANTS ---
 const fadeInUp: import("framer-motion").Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -20,92 +17,6 @@ const staggerContainer: import("framer-motion").Variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { staggerChildren: 0.15 } }
 };
-
-// --- GLOBAL PRELOADER ---
-function useImagePreloader(count: number) {
-  const [images, setImages] = useState<HTMLImageElement[]>([]);
-  const [loaded, setLoaded] = useState(false);
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    const preload = async () => {
-      const promises = [];
-      for (let i = 1; i <= count; i++) {
-        const img = new window.Image();
-        const num = i.toString().padStart(3, "0");
-        img.src = `/images/herosection/ezgif-frame-${num}.jpg`;
-        promises.push(
-          new Promise((resolve) => {
-            img.onload = () => { setProgress(p => p + 1); resolve(img); };
-            img.onerror = () => resolve(null);
-          })
-        );
-      }
-      const results = await Promise.all(promises);
-      setImages(results.filter(img => img !== null) as HTMLImageElement[]);
-      setLoaded(true);
-    };
-    preload();
-  }, [count]);
-
-  return { images, loaded, progress };
-}
-
-// --- MINI VIDEO SCROLL COMPONENT ---
-function ScrollVideoImage({ 
-  images, 
-  startFrame, 
-  endFrame 
-}: { 
-  images: HTMLImageElement[]; 
-  startFrame: number; 
-  endFrame: number;
-}) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start end", "end start"] });
-  const smoothProgress = useSpring(scrollYProgress, { stiffness: 40, damping: 20 });
-
-  const render = (progress: number) => {
-    const canvas = canvasRef.current;
-    if (!canvas || images.length === 0) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    const range = endFrame - startFrame;
-    const frameIndex = startFrame + Math.floor(progress * range);
-    const img = images[Math.min(frameIndex, images.length - 1)];
-    if (img) {
-      const scale = Math.max(canvas.width / img.width, canvas.height / img.height);
-      const x = (canvas.width / 2) - (img.width / 2) * scale;
-      const y = (canvas.height / 2) - (img.height / 2) * scale;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
-    }
-  };
-
-  useMotionValueEvent(smoothProgress, "change", render);
-  useEffect(() => {
-    const handleResize = () => {
-      if (canvasRef.current && containerRef.current) {
-        canvasRef.current.width = containerRef.current.offsetWidth * 2;
-        canvasRef.current.height = containerRef.current.offsetHeight * 2;
-        render(0);
-      }
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [images]);
-
-  return (
-    <motion.div 
-      initial={{ opacity: 0, scale: 0.95 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: 1.2 }}
-      ref={containerRef} className="relative w-full h-full rounded-[2.5rem] overflow-hidden shadow-[0_0_50px_rgba(0,0,0,1)] bg-neutral-900/50 border border-white/5"
-    >
-      <canvas ref={canvasRef} className="w-full h-full object-cover" />
-    </motion.div>
-  );
-}
 
 // --- HERO SECTION ---
 function HeroSection() {
@@ -213,14 +124,18 @@ function ProductCard({ product }: { product: any }) {
 
 // --- MAIN PAGE ---
 export default function Home() {
-  const { images, loaded, progress } = useImagePreloader(TOTAL_FRAMES);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  if (!loaded) {
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
+
+  if (!isLoaded) {
     return (
       <div className="fixed inset-0 bg-black z-[100] flex flex-col items-center justify-center text-white">
         <motion.div animate={{ scale: [1, 1.2, 1], rotate: [0, 5, -5, 0] }} transition={{ duration: 3, repeat: Infinity }} className="text-gold text-7xl font-serif mb-16 tracking-tighter">A</motion.div>
         <div className="w-60 h-px bg-white/5 rounded-full overflow-hidden relative">
-          <motion.div className="h-full bg-gold shadow-[0_0_15px_#D4AF37]" style={{ width: `${(progress / TOTAL_FRAMES) * 100}%` }} />
+          <motion.div initial={{ width: 0 }} animate={{ width: "100%" }} transition={{ duration: 1.5 }} className="h-full bg-gold shadow-[0_0_15px_#D4AF37]" />
         </div>
         <p className="text-gold text-[10px] uppercase tracking-[0.8em] mt-10 font-bold opacity-60">Forging Your Experience</p>
       </div>
@@ -243,18 +158,30 @@ export default function Home() {
             <h2 className="text-5xl md:text-7xl lg:text-8xl font-serif text-foreground leading-[0.9] tracking-tighter drop-shadow-2xl font-bold">Perfected by <br/><span className="italic">Nature</span></h2>
             <p className="text-foreground/60 font-light text-xl leading-relaxed max-w-md italic">Our stone selection process is legendary. One in a thousand diamonds makes the cut for an Aurelia setting.</p>
           </motion.div>
-          <div className="md:w-1/2 aspect-[3.5/4.5] w-full">
-             <ScrollVideoImage images={images} startFrame={121} endFrame={180} />
-          </div>
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }} 
+            whileInView={{ opacity: 1, scale: 1 }} 
+            viewport={{ once: true }} 
+            transition={{ duration: 1.2 }}
+            className="md:w-1/2 aspect-[3.5/4.5] w-full relative rounded-[2.5rem] overflow-hidden shadow-[0_0_50px_rgba(0,0,0,1)] bg-neutral-900/50 border border-white/5"
+          >
+             <video src="/video/1.mp4" autoPlay muted loop playsInline className="w-full h-full object-cover" />
+          </motion.div>
         </motion.div>
       </section>
 
       {/* VIDEO FLOW SECTION 2 */}
       <section className="py-40 px-6 md:px-24 max-w-7xl mx-auto overflow-hidden bg-background">
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer} className="flex flex-col-reverse md:flex-row items-center gap-16 md:gap-32">
-          <div className="md:w-1/2 aspect-[3.5/4.5] w-full">
-             <ScrollVideoImage images={images} startFrame={181} endFrame={240} />
-          </div>
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }} 
+            whileInView={{ opacity: 1, scale: 1 }} 
+            viewport={{ once: true }} 
+            transition={{ duration: 1.2 }}
+            className="md:w-1/2 aspect-[3.5/4.5] w-full relative rounded-[2.5rem] overflow-hidden shadow-[0_0_50px_rgba(0,0,0,1)] bg-neutral-900/50 border border-white/5"
+          >
+             <video src="/video/2.mp4" autoPlay muted loop playsInline className="w-full h-full object-cover" />
+          </motion.div>
           <motion.div variants={fadeInUp} className="md:w-1/2 space-y-10">
             <div className="inline-flex items-center gap-3">
               <span className="w-8 h-px bg-accent" />
@@ -287,9 +214,15 @@ export default function Home() {
             <h2 className="text-5xl md:text-7xl lg:text-8xl font-serif text-foreground leading-[0.9] tracking-tighter font-bold">A New <br/><span className="italic">Radiance</span></h2>
             <p className="text-foreground/60 font-light text-xl leading-relaxed max-w-md">Join the inner circle and be the first to experience our seasonal high-jewelry drops before they hit the public collection.</p>
           </motion.div>
-          <div className="md:w-1/2 aspect-[3.5/4.5] w-full">
-             <ScrollVideoImage images={images} startFrame={241} endFrame={300} />
-          </div>
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }} 
+            whileInView={{ opacity: 1, scale: 1 }} 
+            viewport={{ once: true }} 
+            transition={{ duration: 1.2 }}
+            className="md:w-1/2 aspect-[3.5/4.5] w-full relative rounded-[2.5rem] overflow-hidden shadow-[0_0_50px_rgba(0,0,0,1)] bg-neutral-900/50 border border-white/5"
+          >
+             <video src="/video/3.mp4" autoPlay muted loop playsInline className="w-full h-full object-cover" />
+          </motion.div>
         </motion.div>
       </section>
 
